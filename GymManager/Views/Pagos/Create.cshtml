@@ -1,0 +1,115 @@
+﻿@{
+    ViewData["Title"] = "Registrar pago";
+}
+
+<div class="form-page">
+    <div class="form-header">
+        <div>
+            <h2>Registrar pago</h2>
+            <p>Registra manualmente el pago de una suscripción.</p>
+        </div>
+
+        <a asp-action="Index" class="btn-secondary">
+            ← Volver
+        </a>
+    </div>
+
+    <form asp-action="Create" method="post" class="gym-form">
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+        <div class="form-grid">
+
+            <div class="form-group full-width">
+                <label>Suscripción</label>
+
+                <select name="idSuscripcion" class="form-control" required>
+                    <option value="">-- Selecciona una suscripción --</option>
+
+                    @foreach (var suscripcion in ViewBag.Suscripciones)
+                    {
+                        <option value="@suscripcion.IdSuscripcion">
+                            @suscripcion.Socio.Nombre @suscripcion.Socio.Apellidos
+                            - @suscripcion.Plan.Nombre
+                            - $@suscripcion.PrecioContratado
+                        </option>
+                    }
+                </select>
+
+                <small>Selecciona el socio y plan al que corresponde el pago.</small>
+            </div>
+
+            <div class="form-group">
+                <label>Monto</label>
+
+                <input type="number"
+                       name="monto"
+                       class="form-control"
+                       step="0.01"
+                       min="0.01"
+                       placeholder="0.00"
+                       required />
+            </div>
+
+            <div class="form-group">
+                <label>Fecha de pago</label>
+
+                <input type="datetime-local"
+                       name="fechaPago"
+                       class="form-control"
+                       value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")"
+                       required />
+            </div>
+
+            <div class="form-group">
+                <label>Método de pago</label>
+
+                <select name="metodo" class="form-control" required>
+                    <option value="">-- Selecciona un método --</option>
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="Transferencia">Transferencia</option>
+                    <option value="Tarjeta">Tarjeta</option>
+                    <option value="Otro">Otro</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Referencia</label>
+
+                <input type="text"
+                       name="referencia"
+                       class="form-control"
+                       maxlength="100"
+                       placeholder="Opcional" />
+            </div>
+
+            <div class="form-group full-width">
+                <label>Notas</label>
+
+                <textarea name="notas"
+                          class="form-control"
+                          rows="4"
+                          maxlength="500"
+                          placeholder="Observaciones del pago..."></textarea>
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+            <a asp-action="Index" class="btn-secondary">
+                Cancelar
+            </a>
+
+            <button type="submit" class="btn-primary">
+                Registrar pago
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

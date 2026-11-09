@@ -1,0 +1,133 @@
+﻿```razor
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GymManegerCUU</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/GymManager.styles.css" asp-append-version="true" />
+</head>
+
+<body>
+
+    <div class="gym-layout">
+
+        <!-- MENÚ LATERAL -->
+        <aside class="sidebar">
+
+            <div class="sidebar-brand">
+                <img src="~/images/logo.png" alt="GymManegerCUU" />
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <p class="menu-label">MENÚ PRINCIPAL</p>
+
+                <a asp-controller="Home" asp-action="Index"
+                   class="menu-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
+                    <span>▦</span> Dashboard
+                </a>
+
+                <a asp-controller="Socios" asp-action="Index"
+                   class="menu-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Socios" ? "active" : "")">
+                    <span>♙</span> Socios
+                </a>
+
+                <a asp-controller="Planes" asp-action="Index"
+                   class="menu-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Planes" ? "active" : "")">
+                    <span>▣</span> Planes
+                </a>
+
+                <a asp-controller="Suscripciones" asp-action="Index"
+                   class="menu-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Suscripciones" ? "active" : "")">
+                    <span>▤</span> Suscripciones
+                </a>
+
+                <a asp-controller="Pagos" asp-action="Index"
+                   class="menu-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Pagos" ? "active" : "")">
+                    <span>$</span> Pagos
+                </a>
+
+                <a asp-controller="Reportes" asp-action="Index"
+                   class="menu-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Reportes" ? "active" : "")">
+                    <span>▥</span> Reportes
+                </a>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <span>Panel administrativo</span>
+                <small>GymManegerCUU</small>
+            </div>
+
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+
+            <!-- BARRA SUPERIOR -->
+            <header class="topbar">
+
+                <div class="topbar-search">
+                    <span>⌕</span>
+                    <input type="text" placeholder="Buscar..." />
+                </div>
+
+                <div class="admin-profile">
+
+                    <div class="admin-avatar">A</div>
+
+                    <div class="admin-info">
+                        <strong>Administrador</strong>
+                        <small>Propietario</small>
+                    </div>
+
+                    <form asp-controller="Account"
+                          asp-action="Logout"
+                          method="post"
+                          style="margin-left: 15px;">
+
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit" class="logout-button">
+                            Cerrar sesión
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </header>
+
+            <!-- TÍTULO DE LA PÁGINA -->
+            <div class="page-heading">
+                <h1>@ViewData["Title"]</h1>
+                <span>GymManegerCUU / Administración</span>
+            </div>
+
+            <!-- VISTA ACTUAL -->
+            <section class="page-content">
+                @RenderBody()
+            </section>
+
+            <!-- PIE DE PÁGINA -->
+            <footer class="main-footer">
+                GymManegerCUU © 2026 - Sistema de administración de gimnasio
+            </footer>
+
+        </main>
+
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
+```

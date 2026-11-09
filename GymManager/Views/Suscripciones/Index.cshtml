@@ -1,0 +1,105 @@
+﻿
+@model IEnumerable<GymManager.Models.Suscripcion>
+
+@{
+    ViewData["Title"] = "Suscripciones";
+}
+
+<div class="socios-page">
+
+    <div class="socios-header">
+        <div>
+            <h2>Gestión de suscripciones</h2>
+            <p>Administra las membresías y vigencia de los socios.</p>
+        </div>
+
+        <a asp-action="Create" class="btn-primary-gym">
+            + Nueva suscripción
+        </a>
+    </div>
+
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert-gym">
+            @TempData["Mensaje"]
+        </div>
+    }
+
+    <div class="socios-panel">
+
+        <form asp-action="Index" method="get" class="search-form">
+            <input type="text" name="buscar"
+                   placeholder="Buscar suscripciones..."
+                   value="@Context.Request.Query["buscar"]" />
+
+            <button type="submit">Buscar</button>
+            <a asp-action="Index">Limpiar</a>
+        </form>
+
+        <div style="overflow-x:auto;">
+            <table class="socios-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Socio</th>
+                        <th>Plan</th>
+                        <th>Inicio</th>
+                        <th>Vencimiento</th>
+                        <th>Precio</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>#@item.IdSuscripcion</td>
+                                <td>
+                                    @(item.Socio != null
+                                        ? item.Socio.Nombre + " " + item.Socio.Apellidos
+                                        : "Sin socio")
+                                </td>
+                                <td>
+                                    @(item.Plan?.Nombre ?? "Sin plan")
+                                </td>
+                                <td>@item.FechaInicio.ToString("dd/MM/yyyy")</td>
+                                <td>@item.FechaFin.ToString("dd/MM/yyyy")</td>
+                                <td>@item.PrecioContratado.ToString("C")</td>
+                                <td>
+                                    <span class="status-badge
+                                        @(item.Estado == "Activa" ? "status-active" :
+                                          item.Estado == "Cancelada" ? "status-inactive" : "")">
+                                        @item.Estado
+                                    </span>
+                                </td>
+                                <td class="actions-cell">
+                                    <a asp-action="Edit"
+                                       asp-route-id="@item.IdSuscripcion">
+                                        Editar
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8" class="empty-table">
+                                No hay suscripciones registradas.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-footer">
+            Total de suscripciones: @(Model?.Count() ?? 0)
+        </div>
+
+    </div>
+</div>

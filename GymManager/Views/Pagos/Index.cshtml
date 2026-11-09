@@ -1,0 +1,227 @@
+﻿@model IEnumerable<GymManager.Models.Pago>
+
+@{
+    ViewData["Title"] = "Pagos";
+
+    var pagos = Model?.ToList() ?? new List<GymManager.Models.Pago>();
+
+    decimal totalRegistrado = pagos
+        .Where(p => p.Estado == "Registrado")
+        .Sum(p => p.Monto);
+
+    int pagosRegistrados = pagos.Count(p => p.Estado == "Registrado");
+    int pagosAnulados = pagos.Count(p => p.Estado == "Anulado");
+}
+
+<div class="payments-page">
+
+    <!-- ENCABEZADO -->
+    <div class="payments-header">
+        <div>
+            <span class="section-label">ADMINISTRACIÓN</span>
+            <h2>Pagos</h2>
+            <p>Consulta y administra los pagos registrados del gimnasio.</p>
+        </div>
+
+        <a asp-action="Create" class="btn-primary-gym">
+            + Registrar pago
+        </a>
+    </div>
+
+    <!-- MENSAJE -->
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert-gym">
+            @TempData["Mensaje"]
+        </div>
+    }
+
+    <!-- RESUMEN -->
+    <div class="payment-summary">
+
+        <div class="payment-card">
+            <span>Total registrado</span>
+            <strong>@totalRegistrado.ToString("C")</strong>
+            <small>Ingresos registrados</small>
+        </div>
+
+        <div class="payment-card">
+            <span>Pagos registrados</span>
+            <strong>@pagosRegistrados</strong>
+            <small>Transacciones válidas</small>
+        </div>
+
+        <div class="payment-card">
+            <span>Pagos anulados</span>
+            <strong>@pagosAnulados</strong>
+            <small>Transacciones anuladas</small>
+        </div>
+
+    </div>
+
+    <!-- TABLA -->
+    <div class="payments-panel">
+
+        <div class="payments-panel-header">
+            <div>
+                <h3>Historial de transacciones</h3>
+                <span>Pagos realizados por los socios</span>
+            </div>
+
+            <form asp-action="Index" method="get" class="payment-search">
+                <input type="text"
+                       name="buscar"
+                       placeholder="Buscar..."
+                       value="@Context.Request.Query["buscar"]" />
+
+                <button type="submit">Buscar</button>
+            </form>
+        </div>
+
+        <div class="table-wrapper">
+
+            <table class="payments-table">
+
+                <thead>
+                    <tr>
+                        <th>FECHA</th>
+                        <th>SOCIO</th>
+                        <th>PLAN</th>
+                        <th>MÉTODO</th>
+                        <th>MONTO</th>
+                        <th>ESTADO</th>
+                        <th>ACCIONES</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (pagos.Any())
+                    {
+                        foreach (var pago in pagos)
+                        {
+                            string estadoClase =
+                                pago.Estado == "Registrado"
+                                    ? "payment-status-approved"
+                                    : "payment-status-cancelled";
+
+                            <tr>
+
+                                <td>
+                                    <div class="payment-date">
+                                        <strong>
+                                            @pago.FechaPago.ToString("dd/MM/yyyy")
+                                        </strong>
+
+                                        <small>
+                                            @pago.FechaPago.ToString("hh:mm tt")
+                                        </small>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="payment-person">
+
+                                        <div class="payment-avatar">
+                                            @(
+                                                pago.Suscripcion?.Socio?.Nombre
+                                                    .Substring(0, 1)
+                                                    .ToUpper() ?? "?"
+                                            )
+                                        </div>
+
+                                        <div>
+                                            <strong>
+                                                @(pago.Suscripcion?.Socio != null
+                                                    ? pago.Suscripcion.Socio.Nombre + " " +
+                                                      pago.Suscripcion.Socio.Apellidos
+                                                    : "Sin socio")
+                                            </strong>
+
+                                            <small>
+                                                ID suscripción:
+                                                #@pago.IdSuscripcion
+                                            </small>
+                                        </div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    @(pago.Suscripcion?.Plan?.Nombre ?? "Sin plan")
+                                </td>
+
+                                <td>
+                                    <span class="payment-method">
+                                        @pago.Metodo
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <strong class="payment-amount">
+                                        @pago.Monto.ToString("C")
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    <span class="payment-status @estadoClase">
+                                        @pago.Estado
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="payment-actions">
+
+                                        <a asp-action="Details"
+                                           asp-route-id="@pago.IdPago"
+                                           class="action-view">
+                                            Ver
+                                        </a>
+
+                                        @if (pago.Estado == "Registrado")
+                                        {
+                                            <form asp-action="Anular"
+                                                  asp-route-id="@pago.IdPago"
+                                                  method="post"
+                                                  onsubmit="return confirm('¿Anular este pago?');">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <button type="submit"
+                                                        class="action-cancel">
+                                                    Anular
+                                                </button>
+
+                                            </form>
+                                        }
+
+                                    </div>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="payment-empty">
+                                No hay pagos registrados.
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="payments-footer">
+            <span>
+                Mostrando @pagos.Count pago(s)
+            </span>
+        </div>
+
+    </div>
+
+</div>

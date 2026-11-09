@@ -1,0 +1,106 @@
+﻿@model IEnumerable<GymManager.Models.Socio>
+
+@{
+    ViewData["Title"] = "Socios";
+}
+
+<div class="socios-page">
+
+    <div class="socios-header">
+        <div>
+            <h2>Gestión de socios</h2>
+            <p>Administra los miembros registrados en tu gimnasio.</p>
+        </div>
+
+        <a asp-action="Create" class="btn-primary-gym">
+            + Registrar socio
+        </a>
+    </div>
+
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert-gym">
+            @TempData["Mensaje"]
+        </div>
+    }
+
+    <div class="socios-panel">
+
+        <form asp-action="Index" method="get" class="search-form">
+            <input type="text"
+                   name="buscar"
+                   value="@ViewBag.Buscar"
+                   placeholder="Buscar por nombre o apellidos..." />
+
+            <button type="submit">Buscar</button>
+
+            <a asp-action="Index">Limpiar</a>
+        </form>
+
+        <div class="table-responsive">
+            <table class="socios-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre completo</th>
+                        <th>Teléfono</th>
+                        <th>Correo</th>
+                        <th>Fecha de registro</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        @foreach (var socio in Model)
+                        {
+                            <tr>
+                                <td>#@socio.IdSocio</td>
+                                <td>@socio.Nombre @socio.Apellidos</td>
+                                <td>@(socio.Telefono ?? "—")</td>
+                                <td>@(socio.Correo ?? "—")</td>
+                                <td>@socio.FechaRegistro.ToString("dd/MM/yyyy")</td>
+                                <td>
+                                    <span class="status-badge @(socio.Estado == "Activo" ? "status-active" : "status-inactive")">
+                                        @socio.Estado
+                                    </span>
+                                </td>
+                                <td class="actions-cell">
+                                    <a asp-action="Details"
+                                       asp-route-id="@socio.IdSocio">Ver</a>
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@socio.IdSocio">Editar</a>
+
+                                    <form asp-action="Desactivar"
+                                          asp-route-id="@socio.IdSocio"
+                                          method="post">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit">
+                                            @(socio.Estado == "Activo" ? "Desactivar" : "Activar")
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="empty-table">
+                                No hay socios registrados.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-footer">
+            Total de socios encontrados: @Model.Count()
+        </div>
+
+    </div>
+</div>

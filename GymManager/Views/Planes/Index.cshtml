@@ -1,0 +1,97 @@
+﻿
+@model IEnumerable<GymManager.Models.Plan>
+
+@{
+    ViewData["Title"] = "Planes";
+}
+
+<div class="socios-page">
+
+    <div class="socios-header">
+        <div>
+            <h2>Gestión de planes</h2>
+            <p>Administra las membresías y precios de tu gimnasio.</p>
+        </div>
+
+        <a asp-action="Create" class="btn-primary-gym">
+            + Crear plan
+        </a>
+    </div>
+
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert-gym">
+            @TempData["Mensaje"]
+        </div>
+    }
+
+    <div class="socios-panel">
+
+        <div class="table-responsive">
+            <table class="socios-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre del plan</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                        <th>Duración</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        @foreach (var plan in Model)
+                        {
+                            <tr>
+                                <td>#@plan.IdPlan</td>
+                                <td>@plan.Nombre</td>
+                                <td>@(plan.Descripcion ?? "—")</td>
+                                <td>$@plan.Precio.ToString("N2")</td>
+                                <td>@plan.DuracionDias días</td>
+                                <td>
+                                    <span class="status-badge @(plan.Activo ? "status-active" : "status-inactive")">
+                                        @(plan.Activo ? "Activo" : "Inactivo")
+                                    </span>
+                                </td>
+                                <td class="actions-cell">
+                                    <a asp-action="Edit"
+                                       asp-route-id="@plan.IdPlan">
+                                        Editar
+                                    </a>
+
+                                    <form asp-action="CambiarEstado"
+                                          asp-route-id="@plan.IdPlan"
+                                          method="post"
+                                          style="display:inline">
+                                        @Html.AntiForgeryToken()
+
+                                        <button type="submit">
+                                            @(plan.Activo ? "Desactivar" : "Activar")
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="empty-table">
+                                Todavía no hay planes registrados.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-footer">
+            Total de planes: @Model.Count()
+        </div>
+
+    </div>
+</div>

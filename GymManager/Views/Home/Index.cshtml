@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="dashboard">
+
+    <div class="welcome-section">
+        <div>
+            <h2>¡Bienvenido a GymManager!</h2>
+            <p>Resumen general de tu gimnasio.</p>
+        </div>
+        <span class="dashboard-date">PANEL PRINCIPAL</span>
+    </div>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-icon blue">♟</div>
+            <div class="stat-info">
+                <span>Total de socios</span>
+                <h3>@ViewBag.TotalSocios</h3>
+                <small>Socios registrados</small>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon green">✓</div>
+            <div class="stat-info">
+                <span>Socios activos</span>
+                <h3>@ViewBag.SociosActivos</h3>
+                <small>Con estado activo</small>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon purple">▣</div>
+            <div class="stat-info">
+                <span>Suscripciones vigentes</span>
+                <h3>@ViewBag.SuscripcionesVigentes</h3>
+                <small>Membresías actuales</small>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon orange">$</div>
+            <div class="stat-info">
+                <span>Ingresos del mes</span>
+                <h3>$@(((decimal)ViewBag.IngresosMes).ToString("N2"))</h3>
+                <small>Pagos registrados</small>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="dashboard-bottom">
+
+        <div class="dashboard-panel">
+            <h4>Actividad reciente</h4>
+            <p>Los movimientos de socios y pagos aparecerán aquí.</p>
+        </div>
+
+        <div class="dashboard-panel">
+            <h4>Accesos rápidos</h4>
+
+            <div class="quick-actions">
+                <a href="#" class="quick-action">+ Registrar socio</a>
+                <a href="#" class="quick-action">+ Crear suscripción</a>
+                <a href="#" class="quick-action">+ Registrar pago</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>

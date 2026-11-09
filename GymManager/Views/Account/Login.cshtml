@@ -1,0 +1,77 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Iniciar sesión";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Iniciar sesión - GymManegerCUU</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+
+<body class="login-body">
+
+    <div class="login-container">
+
+        <div class="login-card">
+
+            <div class="login-logo">
+                <img src="~/images/logo.png" alt="GymManegerCUU" />
+            </div>
+
+            <div class="login-header">
+                <h1>Bienvenido</h1>
+                <p>Ingresa al panel administrativo</p>
+            </div>
+
+            <form asp-action="Login" method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="validation-summary">
+                </div>
+
+                <div class="login-group">
+                    <label>Correo electrónico</label>
+
+                    <input type="email"
+                           name="correo"
+                           class="login-input"
+                           placeholder="admin@ejemplo.com"
+                           required />
+                </div>
+
+                <div class="login-group">
+                    <label>Contraseña</label>
+
+                    <input type="password"
+                           name="password"
+                           class="login-input"
+                           placeholder="••••••••"
+                           required />
+                </div>
+
+                <button type="submit" class="login-button">
+                    Iniciar sesión
+                </button>
+
+            </form>
+
+            <div class="login-footer">
+                <span>GymManegerCUU © 2026</span>
+                <small>Panel exclusivo del administrador</small>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

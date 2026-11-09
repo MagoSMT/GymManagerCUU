@@ -1,0 +1,77 @@
+﻿@model GymManager.Models.Socio
+
+@{
+    ViewData["Title"] = "Registrar socio";
+}
+
+<div class="socios-page">
+
+    <div class="socios-header">
+        <div>
+            <h2>Registrar nuevo socio</h2>
+            <p>Ingresa los datos del nuevo miembro del gimnasio.</p>
+        </div>
+
+        <a asp-action="Index" class="btn-primary-gym">
+            Volver a socios
+        </a>
+    </div>
+
+    <div class="socios-panel">
+
+        <form asp-action="Create" method="post">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-grid-gym">
+
+                <div class="form-group-gym">
+                    <label asp-for="Nombre">Nombre</label>
+                    <input asp-for="Nombre" placeholder="Nombre del socio" />
+                    <span asp-validation-for="Nombre"></span>
+                </div>
+
+                <div class="form-group-gym">
+                    <label asp-for="Apellidos">Apellidos</label>
+                    <input asp-for="Apellidos" placeholder="Apellidos del socio" />
+                    <span asp-validation-for="Apellidos"></span>
+                </div>
+
+                <div class="form-group-gym">
+                    <label asp-for="Telefono">Teléfono</label>
+                    <input asp-for="Telefono" placeholder="Número de teléfono" />
+                    <span asp-validation-for="Telefono"></span>
+                </div>
+
+                <div class="form-group-gym">
+                    <label asp-for="Correo">Correo electrónico</label>
+                    <input asp-for="Correo" type="email" placeholder="correo@ejemplo.com" />
+                    <span asp-validation-for="Correo"></span>
+                </div>
+
+                <div class="form-group-gym">
+                    <label asp-for="FechaNacimiento">Fecha de nacimiento</label>
+                    <input asp-for="FechaNacimiento" type="date" />
+                    <span asp-validation-for="FechaNacimiento"></span>
+                </div>
+
+                <div class="form-group-gym full-width">
+                    <label asp-for="Notas">Notas adicionales</label>
+                    <textarea asp-for="Notas" rows="4"
+                              placeholder="Observaciones del socio..."></textarea>
+                    <span asp-validation-for="Notas"></span>
+                </div>
+
+            </div>
+
+            <div class="form-actions-gym">
+                <a asp-action="Index" class="btn-cancel-gym">Cancelar</a>
+                <button type="submit" class="btn-primary-gym">
+                    Guardar socio
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>

@@ -1,0 +1,98 @@
+﻿@{
+    ViewData["Title"] = "Reportes";
+}
+
+<div class="reports-page">
+
+    <div class="reports-header">
+        <div>
+            <h2>Reportes</h2>
+            <p>Consulta un resumen de la información del gimnasio.</p>
+        </div>
+    </div>
+
+    <div class="report-summary">
+
+        <div class="report-card">
+            <span class="report-icon">♙</span>
+            <div>
+                <small>Total de socios</small>
+                <h3>@ViewBag.TotalSocios</h3>
+            </div>
+        </div>
+
+        <div class="report-card">
+            <span class="report-icon">✓</span>
+            <div>
+                <small>Socios activos</small>
+                <h3>@ViewBag.SociosActivos</h3>
+            </div>
+        </div>
+
+        <div class="report-card">
+            <span class="report-icon">▣</span>
+            <div>
+                <small>Planes registrados</small>
+                <h3>@ViewBag.TotalPlanes</h3>
+            </div>
+        </div>
+
+        <div class="report-card">
+            <span class="report-icon">▤</span>
+            <div>
+                <small>Suscripciones activas</small>
+                <h3>@ViewBag.SuscripcionesActivas</h3>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="reports-grid">
+
+        <div class="report-panel">
+            <div class="panel-title">
+                <div>
+                    <h3>Resumen de pagos</h3>
+                    <p>Información general de los pagos registrados.</p>
+                </div>
+            </div>
+
+            <div class="report-info-row">
+                <span>Pagos registrados</span>
+                <strong>@ViewBag.PagosRegistrados</strong>
+            </div>
+
+            <div class="report-info-row">
+                <span>Ingresos totales</span>
+                <strong>$@ViewBag.Ingresos.ToString("N2")</strong>
+            </div>
+        </div>
+
+        <div class="report-panel">
+            <div class="panel-title">
+                <div>
+                    <h3>Estado del gimnasio</h3>
+                    <p>Resumen actual de los registros.</p>
+                </div>
+            </div>
+
+            <div class="report-status">
+                <span class="status-dot"></span>
+                <div>
+                    <strong>Sistema activo</strong>
+                    <small>Los datos se están obteniendo de la base de datos.</small>
+                </div>
+            </div>
+
+            <div class="report-status">
+                <span class="status-dot"></span>
+                <div>
+                    <strong>Control administrativo</strong>
+                    <small>Información disponible para el propietario.</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

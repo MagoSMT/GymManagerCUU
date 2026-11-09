@@ -1,0 +1,95 @@
+﻿
+@model GymManager.Models.Suscripcion
+
+@{
+    ViewData["Title"] = "Nueva suscripción";
+
+    var socios = ViewBag.Socios as List<GymManager.Models.Socio>;
+    var planes = ViewBag.Planes as List<GymManager.Models.Plan>;
+}
+
+<div class="socios-page">
+
+    <div class="socios-header">
+        <div>
+            <h2>Registrar suscripción</h2>
+            <p>Asigna un plan a un socio del gimnasio.</p>
+        </div>
+    </div>
+
+    <div class="socios-panel">
+
+        <form asp-action="Create" method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3"></div>
+
+            <div class="form-grid-gym">
+
+                <div class="form-group-gym">
+                    <label>Socio</label>
+                    <select name="idSocio" required>
+                        <option value="">Seleccionar socio</option>
+                        @if (socios != null)
+                        {
+                            foreach (var socio in socios)
+                            {
+                                <option value="@socio.IdSocio">
+                                    @socio.Nombre @socio.Apellidos
+                                </option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group-gym">
+                    <label>Plan</label>
+                    <select name="idPlan" required>
+                        <option value="">Seleccionar plan</option>
+                        @if (planes != null)
+                        {
+                            foreach (var plan in planes)
+                            {
+                                <option value="@plan.IdPlan">
+                                    @plan.Nombre - @plan.Precio.ToString("C")
+                                    (@plan.DuracionDias días)
+                                </option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group-gym">
+                    <label>Fecha de inicio</label>
+                    <input type="date"
+                           name="fechaInicio"
+                           value="@DateTime.Today.ToString("yyyy-MM-dd")"
+                           required />
+                </div>
+
+                <div class="form-group-gym full-width">
+                    <label>Observaciones</label>
+                    <textarea name="observaciones"
+                              rows="4"
+                              maxlength="500"
+                              placeholder="Observaciones adicionales..."></textarea>
+                </div>
+
+            </div>
+
+            <div class="form-actions-gym">
+                <a asp-action="Index" class="btn-cancel-gym">
+                    Cancelar
+                </a>
+
+                <button type="submit" class="btn-primary-gym">
+                    Registrar suscripción
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
