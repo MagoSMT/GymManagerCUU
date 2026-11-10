@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GymManager.Controllers
 {
+    // Hereda de controller para poder manejar las páginas y acciones del sistema
     public class AccountController : Controller
     {
         private readonly GymDbContext _context;
@@ -13,12 +14,14 @@ namespace GymManager.Controllers
             _context = context;
         }
 
+        // Muestra la pantalla de inicio de sesión
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
+        // Comprueba el correo y contraseña del administrador
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(string correo, string password)
@@ -40,6 +43,7 @@ namespace GymManager.Controllers
                 return View();
             }
 
+            // Guarda al administrador para mantener la sesión iniciada
             HttpContext.Session.SetString(
                 "Administrador",
                 administrador.Nombre);
@@ -47,6 +51,7 @@ namespace GymManager.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        // Cierra la sesión y regresa al login
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Logout()
